@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -29,8 +30,13 @@ public class AirportController {
   RestTemplate restTemplate;
 
   @GetMapping
-  public ResponseEntity<String> getAllAirports() {
+  public ResponseEntity<String> getAllAirports(
+    @RequestHeader("Content-Type") String contentType,
+    @RequestHeader("Accept") String accept
+  ) {
     return ForwardUtil.forwardRequest(
+      contentType,
+      accept,
       restTemplate,
       "http://flight-plane-service/airports",
       HttpMethod.GET
@@ -39,9 +45,13 @@ public class AirportController {
 
   @GetMapping(path = "{airportId}")
   public ResponseEntity<String> getAirport(
+    @RequestHeader("Content-Type") String contentType,
+    @RequestHeader("Accept") String accept,
     @PathVariable("airportId") String airportId
   ) {
     return ForwardUtil.forwardRequest(
+      contentType,
+      accept,
       restTemplate,
       "http://flight-plane-service/airports/{id}",
       airportId,
@@ -50,8 +60,14 @@ public class AirportController {
   }
 
   @PostMapping
-  public ResponseEntity<String> createAirport(@RequestBody String body) {
+  public ResponseEntity<String> createAirport(
+    @RequestHeader("Content-Type") String contentType,
+    @RequestHeader("Accept") String accept,
+    @RequestBody String body
+  ) {
     return ForwardUtil.forwardRequest(
+      contentType,
+      accept,
       restTemplate,
       "http://flight-plane-service/airports",
       HttpMethod.POST,
@@ -61,10 +77,14 @@ public class AirportController {
 
   @PutMapping(path = "{airportId}")
   public ResponseEntity<String> updateAirport(
+    @RequestHeader("Content-Type") String contentType,
+    @RequestHeader("Accept") String accept,
     @PathVariable("airportId") String airportId,
     @RequestBody String body
   ) {
     return ForwardUtil.forwardRequest(
+      contentType,
+      accept,
       restTemplate,
       "http://flight-plane-service/airports/{id}",
       airportId,
@@ -75,9 +95,13 @@ public class AirportController {
 
   @DeleteMapping(path = "{airportId}")
   public ResponseEntity<String> deleteAirport(
+    @RequestHeader("Content-Type") String contentType,
+    @RequestHeader("Accept") String accept,
     @PathVariable("airportId") String airportId
   ) {
     return ForwardUtil.forwardRequest(
+      contentType,
+      accept,
       restTemplate,
       "http://flight-plane-service/airports/{id}",
       airportId,

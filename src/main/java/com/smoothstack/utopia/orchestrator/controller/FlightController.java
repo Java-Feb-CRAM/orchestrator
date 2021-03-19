@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -26,8 +27,13 @@ public class FlightController {
   RestTemplate restTemplate;
 
   @GetMapping
-  public ResponseEntity<String> getAllFlights() {
+  public ResponseEntity<String> getAllFlights(
+    @RequestHeader("Content-Type") String contentType,
+    @RequestHeader("Accept") String accept
+  ) {
     return ForwardUtil.forwardRequest(
+      contentType,
+      accept,
       restTemplate,
       "http://flight-plane-service/flights",
       HttpMethod.GET
@@ -36,9 +42,13 @@ public class FlightController {
 
   @GetMapping(path = "{flightId}")
   public ResponseEntity<String> getFlight(
+    @RequestHeader("Content-Type") String contentType,
+    @RequestHeader("Accept") String accept,
     @PathVariable("flightId") String flightId
   ) {
     return ForwardUtil.forwardRequest(
+      contentType,
+      accept,
       restTemplate,
       "http://flight-plane-service/flights/{id}",
       flightId,
@@ -47,8 +57,14 @@ public class FlightController {
   }
 
   @PostMapping
-  public ResponseEntity<String> createFlight(@RequestBody String body) {
+  public ResponseEntity<String> createFlight(
+    @RequestHeader("Content-Type") String contentType,
+    @RequestHeader("Accept") String accept,
+    @RequestBody String body
+  ) {
     return ForwardUtil.forwardRequest(
+      contentType,
+      accept,
       restTemplate,
       "http://flight-plane-service/flights",
       HttpMethod.POST,
@@ -58,10 +74,14 @@ public class FlightController {
 
   @PutMapping(path = "{flightId}")
   public ResponseEntity<String> updateFlight(
+    @RequestHeader("Content-Type") String contentType,
+    @RequestHeader("Accept") String accept,
     @PathVariable("flightId") String flightId,
     @RequestBody String body
   ) {
     return ForwardUtil.forwardRequest(
+      contentType,
+      accept,
       restTemplate,
       "http://flight-plane-service/flights/{id}",
       flightId,
@@ -72,9 +92,13 @@ public class FlightController {
 
   @DeleteMapping(path = "{flightId}")
   public ResponseEntity<String> deleteFlight(
+    @RequestHeader("Content-Type") String contentType,
+    @RequestHeader("Accept") String accept,
     @PathVariable("flightId") String flightId
   ) {
     return ForwardUtil.forwardRequest(
+      contentType,
+      accept,
       restTemplate,
       "http://flight-plane-service/flights/{id}",
       flightId,
