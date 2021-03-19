@@ -1,6 +1,11 @@
 package com.smoothstack.utopia.orchestrator.util;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,154 +23,60 @@ import org.springframework.web.server.ResponseStatusException;
 public class ForwardUtil {
 
   public static ResponseEntity<String> forwardRequest(
-    String contentType,
-    String accept,
     RestTemplate rt,
+    HttpServletRequest request,
     String url,
-    Object variable,
-    HttpMethod method
+    Object... pathVariable
   ) {
-    if (
-      !contentType.equals("application/xml") &&
-      !contentType.equals("application/json")
-    ) {
-      throw new ResponseStatusException(
-        HttpStatus.UNSUPPORTED_MEDIA_TYPE,
-        "Request must be XML or JSON"
-      );
-    }
+    // construct headers for the outgoing request
     HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(
-      contentType.equals("application/xml")
-        ? MediaType.APPLICATION_XML
-        : MediaType.APPLICATION_JSON
+    // see if incoming request includes Content-Type header
+    Optional<String> contentType = Optional.ofNullable(
+      request.getHeader("Content-Type")
     );
-    headers.setAccept(
-      accept.equals("application/xml")
-        ? List.of(MediaType.APPLICATION_XML)
-        : List.of(MediaType.APPLICATION_JSON)
+    // see if incoming request includes Accept header
+    Optional<String> accept = Optional.ofNullable(request.getHeader("Accept"));
+    // if the incoming request has Content-Type header, add it to the outgoing request
+    contentType.ifPresent(
+      s -> headers.setContentType(MediaType.parseMediaType(s))
     );
-    HttpEntity<String> entity = new HttpEntity<>(headers);
+    // if the incoming request has Accept header, add it to the outgoing request
+    // if not, have outgoing request accept everything
+    accept.ifPresentOrElse(
+      s -> headers.setAccept(MediaType.parseMediaTypes(s)),
+      () -> headers.setAccept(List.of(MediaType.ALL))
+    );
+    // set http method of outgoing request to that of the incoming request
+    HttpMethod method = HttpMethod.resolve(request.getMethod());
+    // create http entity for the outgoing request
+    HttpEntity<String> entity;
+    // if the incoming request is a POST or PUT
+    if (method.equals(HttpMethod.POST) || method.equals(HttpMethod.PUT)) {
+      // attempt to parse the incoming request's body as a string
+      String body = "";
+      try {
+        body =
+          request
+            .getReader()
+            .lines()
+            .collect(Collectors.joining(System.lineSeparator()));
+      } catch (IOException ignored) {}
+      // if the body is empty, do not include it in the entity
+      if (body.equals("")) {
+        entity = new HttpEntity<>(headers);
+      } else {
+        // if the body is not empty, include it in the entity
+        entity = new HttpEntity<>(body, headers);
+      }
+    } else {
+      // if the incoming request is not POST or PUT, do not include the body in the entity
+      entity = new HttpEntity<>(headers);
+    }
     try {
-      return rt.exchange(url, method, entity, String.class, variable);
+      // attempt to send the outgoing request and return it's response
+      return rt.exchange(url, method, entity, String.class, pathVariable);
     } catch (HttpClientErrorException e) {
-      return new ResponseEntity<>(
-        e.getResponseBodyAsString(),
-        e.getStatusCode()
-      );
-    }
-  }
-
-  public static ResponseEntity<String> forwardRequest(
-    String contentType,
-    String accept,
-    RestTemplate rt,
-    String url,
-    HttpMethod method
-  ) {
-    if (
-      !contentType.equals("application/xml") &&
-      !contentType.equals("application/json")
-    ) {
-      throw new ResponseStatusException(
-        HttpStatus.UNSUPPORTED_MEDIA_TYPE,
-        "Request must be XML or JSON"
-      );
-    }
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(
-      contentType.equals("application/xml")
-        ? MediaType.APPLICATION_XML
-        : MediaType.APPLICATION_JSON
-    );
-    headers.setAccept(
-      accept.equals("application/xml")
-        ? List.of(MediaType.APPLICATION_XML)
-        : List.of(MediaType.APPLICATION_JSON)
-    );
-    HttpEntity<String> entity = new HttpEntity<>(headers);
-    try {
-      return rt.exchange(url, method, entity, String.class);
-    } catch (HttpClientErrorException e) {
-      return new ResponseEntity<>(
-        e.getResponseBodyAsString(),
-        e.getStatusCode()
-      );
-    }
-  }
-
-  public static ResponseEntity<String> forwardRequest(
-    String contentType,
-    String accept,
-    RestTemplate rt,
-    String url,
-    HttpMethod method,
-    String body
-  ) {
-    if (
-      !contentType.equals("application/xml") &&
-      !contentType.equals("application/json")
-    ) {
-      throw new ResponseStatusException(
-        HttpStatus.UNSUPPORTED_MEDIA_TYPE,
-        "Request must be XML or JSON"
-      );
-    }
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(
-      contentType.equals("application/xml")
-        ? MediaType.APPLICATION_XML
-        : MediaType.APPLICATION_JSON
-    );
-    headers.setAccept(
-      accept.equals("application/xml")
-        ? List.of(MediaType.APPLICATION_XML)
-        : List.of(MediaType.APPLICATION_JSON)
-    );
-    HttpEntity<String> entity = new HttpEntity<>(body, headers);
-    try {
-      return rt.exchange(url, method, entity, String.class);
-    } catch (HttpClientErrorException e) {
-      return new ResponseEntity<>(
-        e.getResponseBodyAsString(),
-        e.getStatusCode()
-      );
-    }
-  }
-
-  public static ResponseEntity<String> forwardRequest(
-    String contentType,
-    String accept,
-    RestTemplate rt,
-    String url,
-    Object variable,
-    HttpMethod method,
-    String body
-  ) {
-    if (
-      !contentType.equals("application/xml") &&
-      !contentType.equals("application/json")
-    ) {
-      throw new ResponseStatusException(
-        HttpStatus.UNSUPPORTED_MEDIA_TYPE,
-        "Request must be XML or JSON"
-      );
-    }
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(
-      contentType.equals("application/xml")
-        ? MediaType.APPLICATION_XML
-        : MediaType.APPLICATION_JSON
-    );
-    headers.setAccept(
-      accept.equals("application/xml")
-        ? List.of(MediaType.APPLICATION_XML)
-        : List.of(MediaType.APPLICATION_JSON)
-    );
-    HttpEntity<String> entity = new HttpEntity<>(body, headers);
-    try {
-      return rt.exchange(url, method, entity, String.class, variable);
-    } catch (HttpClientErrorException e) {
+      // if the request fails, return the failing status code and body
       return new ResponseEntity<>(
         e.getResponseBodyAsString(),
         e.getStatusCode()

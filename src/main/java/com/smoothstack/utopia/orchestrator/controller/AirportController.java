@@ -1,6 +1,7 @@
 package com.smoothstack.utopia.orchestrator.controller;
 
 import com.smoothstack.utopia.orchestrator.util.ForwardUtil;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -30,82 +31,59 @@ public class AirportController {
   RestTemplate restTemplate;
 
   @GetMapping
-  public ResponseEntity<String> getAllAirports(
-    @RequestHeader("Content-Type") String contentType,
-    @RequestHeader("Accept") String accept
-  ) {
+  public ResponseEntity<String> getAllAirports(HttpServletRequest request) {
     return ForwardUtil.forwardRequest(
-      contentType,
-      accept,
       restTemplate,
-      "http://flight-plane-service/airports",
-      HttpMethod.GET
+      request,
+      "http://flight-plane-service/airports"
     );
   }
 
   @GetMapping(path = "{airportId}")
   public ResponseEntity<String> getAirport(
-    @RequestHeader("Content-Type") String contentType,
-    @RequestHeader("Accept") String accept,
+    HttpServletRequest request,
     @PathVariable("airportId") String airportId
   ) {
     return ForwardUtil.forwardRequest(
-      contentType,
-      accept,
       restTemplate,
+      request,
       "http://flight-plane-service/airports/{id}",
-      airportId,
-      HttpMethod.GET
+      airportId
     );
   }
 
   @PostMapping
-  public ResponseEntity<String> createAirport(
-    @RequestHeader("Content-Type") String contentType,
-    @RequestHeader("Accept") String accept,
-    @RequestBody String body
-  ) {
+  public ResponseEntity<String> createAirport(HttpServletRequest request) {
     return ForwardUtil.forwardRequest(
-      contentType,
-      accept,
       restTemplate,
-      "http://flight-plane-service/airports",
-      HttpMethod.POST,
-      body
+      request,
+      "http://flight-plane-service/airports"
     );
   }
 
   @PutMapping(path = "{airportId}")
   public ResponseEntity<String> updateAirport(
-    @RequestHeader("Content-Type") String contentType,
-    @RequestHeader("Accept") String accept,
-    @PathVariable("airportId") String airportId,
-    @RequestBody String body
+    HttpServletRequest request,
+    @PathVariable("airportId") String airportId
   ) {
     return ForwardUtil.forwardRequest(
-      contentType,
-      accept,
       restTemplate,
+      request,
       "http://flight-plane-service/airports/{id}",
-      airportId,
-      HttpMethod.PUT,
-      body
+      airportId
     );
   }
 
   @DeleteMapping(path = "{airportId}")
   public ResponseEntity<String> deleteAirport(
-    @RequestHeader("Content-Type") String contentType,
-    @RequestHeader("Accept") String accept,
+    HttpServletRequest request,
     @PathVariable("airportId") String airportId
   ) {
     return ForwardUtil.forwardRequest(
-      contentType,
-      accept,
       restTemplate,
+      request,
       "http://flight-plane-service/airports/{id}",
-      airportId,
-      HttpMethod.DELETE
+      airportId
     );
   }
 }
