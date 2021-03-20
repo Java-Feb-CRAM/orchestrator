@@ -1,8 +1,7 @@
-package com.smoothstack.utopia.orchestrator.config;
+package com.smoothstack.utopia.orchestrator.security;
 
-import com.netflix.discovery.converters.Auto;
-import com.smoothstack.utopia.orchestrator.JwtAuthenticationEntryPoint;
-import com.smoothstack.utopia.orchestrator.JwtRequestFilter;
+import com.smoothstack.utopia.orchestrator.security.JwtAuthenticationEntryPoint;
+import com.smoothstack.utopia.orchestrator.security.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
@@ -58,13 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http
       .csrf()
       .disable()
-      .authorizeRequests()
-      .antMatchers("/")
-      .permitAll()
-      .anyRequest()
-      //.authenticated()
-      .permitAll()
-      .and()
       .exceptionHandling()
       .authenticationEntryPoint(jwtAuthenticationEntryPoint)
       .and()

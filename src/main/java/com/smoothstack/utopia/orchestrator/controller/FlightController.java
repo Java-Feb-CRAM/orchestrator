@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +50,7 @@ public class FlightController {
     );
   }
 
+  @Secured("ROLE_ADMIN")
   @PostMapping
   public ResponseEntity<String> createFlight(HttpServletRequest request) {
     return ForwardUtil.forwardRequest(
@@ -58,6 +60,7 @@ public class FlightController {
     );
   }
 
+  @Secured("ROLE_ADMIN")
   @PutMapping(path = "{flightId}")
   public ResponseEntity<String> updateFlight(
     HttpServletRequest request,
@@ -71,6 +74,7 @@ public class FlightController {
     );
   }
 
+  @Secured("ROLE_ADMIN")
   @DeleteMapping(path = "{flightId}")
   public ResponseEntity<String> deleteFlight(
     HttpServletRequest request,

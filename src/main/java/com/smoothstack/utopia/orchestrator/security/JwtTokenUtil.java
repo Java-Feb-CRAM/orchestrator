@@ -1,4 +1,4 @@
-package com.smoothstack.utopia.orchestrator;
+package com.smoothstack.utopia.orchestrator.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
