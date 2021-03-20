@@ -1,7 +1,5 @@
 package com.smoothstack.utopia.orchestrator.security;
 
-import com.smoothstack.utopia.orchestrator.security.JwtAuthenticationEntryPoint;
-import com.smoothstack.utopia.orchestrator.security.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

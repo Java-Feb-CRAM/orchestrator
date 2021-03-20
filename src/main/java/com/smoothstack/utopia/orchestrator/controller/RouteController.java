@@ -1,6 +1,5 @@
 package com.smoothstack.utopia.orchestrator.controller;
 
-import com.netflix.discovery.converters.Auto;
 import com.smoothstack.utopia.orchestrator.util.ForwardUtil;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
