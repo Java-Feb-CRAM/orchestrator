@@ -10,7 +10,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.smoothstack.utopia.shared.model.User;
-
 import java.util.Date;
-
-import static java.lang.String.format;
 
 /**
  * @author Craig Saunders
@@ -33,49 +28,24 @@ import static java.lang.String.format;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtTokenUtil {
-    private final int ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
     
     @Value("jwt.secret")
     private final String jwtSecret;
-    private final String jwtIssuer = "example.io";
 
-    public String generateAccessToken(User user) {
-        return Jwts.builder()
-                .setSubject(format("%s,%s", user.getId(), user.getUsername()))
-                .setIssuer(jwtIssuer)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + ONE_WEEK_MILLISECONDS)) // 1 week
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
+    public String getTokenUsername(String token) 
+    {
+        return getTokenClaims(token).getSubject();
+    }
+    
+    public Date getTokenExpirationDate(String token) {
+        return getTokenClaims(token).getExpiration();
     }
 
-    public String getUserId(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims.getSubject().split(",")[0];
+    public Claims getTokenClaims(String token)
+    {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
     }
-
-    public String getUsername(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims.getSubject().split(",")[1];
-    }
-
-    public Date getExpirationDate(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims.getExpiration();
-    }
-
+    
     public boolean validate(String token) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
