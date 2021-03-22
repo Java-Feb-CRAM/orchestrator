@@ -38,7 +38,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain chain) throws ServletException, IOException, UsernameNotFoundException {
+                                    FilterChain chain) throws ServletException, IOException, UsernameNotFoundException 
+    {
         // Get authorization header and validate
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header == null || header.equals("") || !header.startsWith("Bearer ")) {

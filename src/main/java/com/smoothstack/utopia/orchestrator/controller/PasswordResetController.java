@@ -27,7 +27,7 @@ public class PasswordResetController {
     RestTemplate restTemplate;
 
     private final String MAPPING_VALUE = "/password-reset";
-    private final String BASE_URI = "http://user-auth-service/registration";
+    private final String BASE_URI = "http://user-auth-service/password-reset";
     
     @PostMapping(path = MAPPING_VALUE)
     public ResponseEntity<String> registerUserAccount(HttpServletRequest request) 
@@ -49,14 +49,14 @@ public class PasswordResetController {
             username);
     }
     
-    @GetMapping(path = MAPPING_VALUE + "confirm-password-token/{token}")
+    @GetMapping(path = MAPPING_VALUE + "/confirm-password-token/{token}")
     public ResponseEntity<String> confirmPasswordToken(HttpServletRequest request, 
             @PathVariable("token") String token) 
     {
         return ForwardUtil.forwardRequest(
             restTemplate, 
             request, 
-            BASE_URI+"confirm-password-token/{token}",
+            BASE_URI+"/confirm-password-token/{token}",
             token);
     }
 }
