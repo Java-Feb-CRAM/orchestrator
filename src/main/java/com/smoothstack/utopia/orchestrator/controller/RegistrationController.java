@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,7 +27,7 @@ public class RegistrationController {
     private final String MAPPING_VALUE = "/registration";
     private final String BASE_URI = "http://user-auth-service/registration";
 
-    @PostMapping
+    @PutMapping(path = MAPPING_VALUE)
     public ResponseEntity<String> registerUserAccount(HttpServletRequest request)
     {
         return ForwardUtil.forwardRequest(
