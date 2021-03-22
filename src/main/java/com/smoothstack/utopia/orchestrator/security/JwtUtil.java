@@ -33,14 +33,14 @@ import static java.lang.String.format;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class JwtTokenUtil {
+public class JwtUtil {
     @Autowired
     public UserRepository userRepository;
-    
+
+    /* BEGIN REFFERENCE FOR GENERATING THE CORRECT ACCESS TOKEN */
     @Value("${UT_JWT_SECRET}")
     private String jwtSecret;
     
-    /* BEGIN REFFERENCE FOR GENERATING THE CORRECT ACCESS TOKEN */
     private final String jwtIssuer = "utopia.smoothstack.com";
     private final int ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
     
