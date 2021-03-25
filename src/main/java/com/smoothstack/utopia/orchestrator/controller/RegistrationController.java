@@ -43,7 +43,7 @@ public class RegistrationController {
         return ForwardUtil.forwardRequest(
             restTemplate, 
             request, 
-            BASE_URI+"/email-verification-resend/{username}",
+            BASE_URI+"/user-account-verification-token-resend/{username}",
             username);
     }
 
@@ -52,7 +52,7 @@ public class RegistrationController {
         return ForwardUtil.forwardRequest(
             restTemplate, 
             request, 
-            BASE_URI+"/email-verification/{token}",
+            BASE_URI+"/account-activation/{token}",
             token);
     }
 }
