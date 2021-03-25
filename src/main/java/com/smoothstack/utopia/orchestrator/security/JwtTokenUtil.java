@@ -1,57 +1,91 @@
+/**
+ * 
+ */
+/**
+ * 
+ */
 package com.smoothstack.utopia.orchestrator.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.function.Function;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.smoothstack.utopia.orchestrator.dao.UserRepository;
+
+import java.util.Date;
+
+import static java.lang.String.format;
+
 /**
- * @author Rob Maes
- * Mar 19 2021
+ * @author Craig Saunders
+ *
  */
 @Component
-public class JwtTokenUtil implements Serializable {
+@Slf4j
+@RequiredArgsConstructor
+public class JwtTokenUtil {
+    @Autowired
+    public UserRepository userRepository;
+    
+    @Value("${UT_JWT_SECRET}")
+    private String jwtSecret;
+    
+    /* BEGIN REFFERENCE FOR GENERATING THE CORRECT ACCESS TOKEN */
+    private final String jwtIssuer = "utopia.smoothstack.com";
+    private final int ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
+    
+    public String generateAccessToken(String username) {
+        return Jwts.builder()
+                .setSubject(format("%s", username))
+                .setIssuedAt(new Date())
+                .setIssuer(jwtIssuer)
+                .setExpiration(new Date(System.currentTimeMillis() + ONE_WEEK_MILLISECONDS)) // 1 week
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
+    }
+    /* END REFFERENCE FOR GENERATING THE CORRECT ACCESS TOKEN */
+    
+    public String getTokenUsername(String token) 
+    {
+        return getTokenClaims(token).getSubject();
+    }
+    
+    public Date getTokenExpirationDate(String token) 
+    {
+        return getTokenClaims(token).getExpiration();
+    }
 
-  @Serial
-  private static final long serialVersionUID = -2657027816134692423L;
+    public Claims getTokenClaims(String token)
+    {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+    }
+    
+    public boolean validate(String token) {        
+        try {
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            return true;
+        } catch (SignatureException ex) {
+            log.error("Invalid JWT signature - {}", ex.getMessage());
+        } catch (MalformedJwtException ex) {
+            log.error("Invalid JWT token - {}", ex.getMessage());
+        } catch (ExpiredJwtException ex) {
+            log.error("Expired JWT token - {}", ex.getMessage());
+        } catch (UnsupportedJwtException ex) {
+            log.error("Unsupported JWT token - {}", ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            log.error("JWT claims string is empty - {}", ex.getMessage());
+        }
+        return false;
+    }
 
-  @Value("${jwt.secret}")
-  private String secret;
-
-  public String getUsernameFromToken(String token) {
-    return getClaimFromToken(token, Claims::getSubject);
-  }
-
-  public Date getExpirationDateFromToken(String token) {
-    return getClaimFromToken(token, Claims::getExpiration);
-  }
-
-  public <T> T getClaimFromToken(
-    String token,
-    Function<Claims, T> claimsResolver
-  ) {
-    final Claims claims = getAllClaimsFromToken(token);
-    return claimsResolver.apply(claims);
-  }
-
-  private Claims getAllClaimsFromToken(String token) {
-    return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-  }
-
-  private Boolean isTokenExpired(String token) {
-    final Date expiration = getExpirationDateFromToken(token);
-    return expiration.before(new Date());
-  }
-
-  public Boolean validateToken(String token, UserDetails userDetails) {
-    final String username = getUsernameFromToken(token);
-    return (
-      username.equals(userDetails.getUsername()) && !isTokenExpired(token)
-    );
-  }
 }
