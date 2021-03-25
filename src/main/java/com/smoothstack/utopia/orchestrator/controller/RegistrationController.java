@@ -36,7 +36,7 @@ public class RegistrationController {
             BASE_URI);
     }
 
-    @GetMapping(path = MAPPING_VALUE+"/email-verification-resend/{username}")
+    @GetMapping(path = MAPPING_VALUE+"/user-account-verification-token-resend/{username}")
     public ResponseEntity<String> resendEmailVerificationToken(HttpServletRequest request, 
             @PathVariable("username") String username) 
     {
@@ -47,7 +47,7 @@ public class RegistrationController {
             username);
     }
 
-    @GetMapping(path = MAPPING_VALUE+"/email-verification/{token}")
+    @GetMapping(path = MAPPING_VALUE+"/account-activation/{token}")
     public ResponseEntity<String> verifyEmail(HttpServletRequest request, @PathVariable("token") String token) {
         return ForwardUtil.forwardRequest(
             restTemplate, 
