@@ -27,10 +27,10 @@ public class PasswordResetController {
     RestTemplate restTemplate;
 
     private final String MAPPING_VALUE = "/password-reset";
-    private final String BASE_URI = "http://user-auth-service/password-reset";
+    private final String BASE_URI = "http://user-auth-service"+MAPPING_VALUE;
     
     @PostMapping(path = MAPPING_VALUE)
-    public ResponseEntity<String> registerUserAccount(HttpServletRequest request) 
+    public ResponseEntity<String> changeUserPassword(HttpServletRequest request) 
     {
         return ForwardUtil.forwardRequest(
             restTemplate, 

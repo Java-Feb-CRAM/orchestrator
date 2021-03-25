@@ -29,9 +29,9 @@ import java.io.IOException;
  */
 @Component
 @RequiredArgsConstructor
-public class JwtTokenFilter extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter {
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;    
+    private JwtUtil jwtUtil;    
     @Autowired
     private UserRepository userRepository;
 
@@ -49,13 +49,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         // Get jwt token and validate
         final String token = header.split(" ")[1].trim();
-        if (!jwtTokenUtil.validate(token)) {
+        if (!jwtUtil.validate(token)) {
             chain.doFilter(request, response);
             return;
         }
 
-        User user = userRepository.findByUsername(jwtTokenUtil.getTokenUsername(token))
-                .orElseThrow(() -> new UsernameNotFoundException("Invalid username: " + jwtTokenUtil.getTokenUsername(token)));
+        User user = userRepository.findByUsername(jwtUtil.getTokenUsername(token))
+                .orElseThrow(() -> new UsernameNotFoundException("Invalid username: " + jwtUtil.getTokenUsername(token)));
         
         UserPrincipal userDetails = new UserPrincipal(user.getUsername(), user.getPassword(), 
                 user.getUserRole().getName());
