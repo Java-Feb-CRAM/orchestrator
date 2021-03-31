@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -24,35 +22,35 @@ public class RegistrationController {
     @Autowired
     RestTemplate restTemplate;
     
-    private final String MAPPING_VALUE = "/registration";
-    private final String BASE_URI = "http://user-auth-service"+MAPPING_VALUE;
+    private final String MAPPING_VALUE = "/users";
+    private final String BASE_URI = "http://user-auth-service";
+    private final String NEW_USER = MAPPING_VALUE + "/new";
+    private final String GENERATE_TOKEN = MAPPING_VALUE + "/usernames/tokens/generate";
+    private final String ACTIVATE_USER = MAPPING_VALUE + "/useranames/tokens/activate";
 
-    @PostMapping(path = MAPPING_VALUE)
+    @PostMapping(path = NEW_USER)
     public ResponseEntity<String> registerUserAccount(HttpServletRequest request)
     {
         return ForwardUtil.forwardRequest(
             restTemplate, 
             request, 
-            BASE_URI);
+            BASE_URI+NEW_USER);
     }
 
-    @GetMapping(path = MAPPING_VALUE+"/user-account-verification-token-resend/{username}")
-    public ResponseEntity<String> resendEmailVerificationToken(HttpServletRequest request, 
-            @PathVariable("username") String username) 
+    @PostMapping(path = GENERATE_TOKEN)
+    public ResponseEntity<String> generateVerificationToken(HttpServletRequest request) 
     {
         return ForwardUtil.forwardRequest(
             restTemplate, 
             request, 
-            BASE_URI+"/user-account-verification-token-resend/{username}",
-            username);
+            BASE_URI+GENERATE_TOKEN);
     }
 
-    @GetMapping(path = MAPPING_VALUE+"/account-activation/{token}")
-    public ResponseEntity<String> verifyEmail(HttpServletRequest request, @PathVariable("token") String token) {
+    @PostMapping(path = ACTIVATE_USER)
+    public ResponseEntity<String> verifyEmail(HttpServletRequest request) {
         return ForwardUtil.forwardRequest(
             restTemplate, 
             request, 
-            BASE_URI+"/account-activation/{token}",
-            token);
+            BASE_URI+ACTIVATE_USER);
     }
 }
