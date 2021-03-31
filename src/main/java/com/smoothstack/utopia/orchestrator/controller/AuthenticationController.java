@@ -20,17 +20,18 @@ import com.smoothstack.utopia.orchestrator.util.ForwardUtil;
 @RestController
 public class AuthenticationController {
 
-    private final String MAPPING_VALUE = "/authentication";
-    private final String BASE_URI = "http://user-auth-service"+MAPPING_VALUE;
+    private final String MAPPING_VALUE = "/users";
+    private final String BASE_URI = "http://user-auth-service";
+    private final String AUTHENTICATE_USER = MAPPING_VALUE + "/credentails/authenticate";
     @Autowired
     RestTemplate restTemplate;
 
-    @PostMapping(path = MAPPING_VALUE)
+    @PostMapping(path = AUTHENTICATE_USER)
     public ResponseEntity<String> authenticateUser(HttpServletRequest request)
     {
         return ForwardUtil.forwardRequest(
             restTemplate, 
             request, 
-            BASE_URI);
+            BASE_URI+AUTHENTICATE_USER);
     }
 }
