@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -17,16 +18,16 @@ import com.smoothstack.utopia.orchestrator.util.ForwardUtil;
  * @author Craig Saunders
  *
  */
+@CrossOrigin(origins = "*")
 @RestController
 public class PasswordResetController {
     @Autowired
     RestTemplate restTemplate;
 
-    private final String MAPPING_VALUE = "/users";
     private final String BASE_URI = "http://user-auth-service";
-    private final String NEW_PASSWORD = MAPPING_VALUE + "/password/new";
-    private final String GENERATE_TOKEN = MAPPING_VALUE + "/password/tokens/generate";
-    private final String CONFIRM_TOKEN = MAPPING_VALUE + "/password/tokens/confirm";
+    private final String NEW_PASSWORD = "/users/password/new";
+    private final String GENERATE_TOKEN = "/users/password/tokens/generate";
+    private final String CONFIRM_TOKEN = "/users/password/tokens/confirm";
     
     @PostMapping(path = NEW_PASSWORD)
     public ResponseEntity<String> changeUserPassword(HttpServletRequest request) 
