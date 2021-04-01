@@ -23,7 +23,7 @@ import com.smoothstack.utopia.orchestrator.util.ForwardUtil;
 public class AuthenticationController {
 
     private final String BASE_URI = "http://user-auth-service";
-    private final String AUTHENTICATE_USER = "/users/credentails/authenticate";
+    private final String AUTHENTICATE_USER = "/users/credentials/authenticate";
     @Autowired
     RestTemplate restTemplate;
 
