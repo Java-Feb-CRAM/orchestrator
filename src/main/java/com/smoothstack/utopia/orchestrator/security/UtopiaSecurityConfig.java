@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.smoothstack.utopia.orchestrator.security;
 
@@ -23,26 +23,32 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class UtopiaSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    @Autowired
-    private JwtFilter jwtRequestFilter;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception
-    {
-        http.csrf().disable().exceptionHandling()
-            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-    }
+  @Autowired
+  private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    @Bean
-    public PasswordEncoder passwordEncoder()
-    {
-        return new BCryptPasswordEncoder();
-    }
+  @Autowired
+  private JwtFilter jwtRequestFilter;
+
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http
+      .csrf()
+      .disable()
+      .exceptionHandling()
+      .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+      .and()
+      .sessionManagement()
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and()
+      .addFilterBefore(
+        jwtRequestFilter,
+        UsernamePasswordAuthenticationFilter.class
+      );
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }
