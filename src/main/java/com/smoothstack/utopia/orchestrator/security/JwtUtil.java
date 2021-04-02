@@ -87,5 +87,9 @@ public class JwtUtil {
         }
         return false;
     }
-
+	
+	public String parseUsernameFromJwt(String jwt)
+	{
+		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt).getBody().getSubject();
+	}
 }
