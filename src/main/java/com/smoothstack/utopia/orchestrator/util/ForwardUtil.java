@@ -31,20 +31,12 @@ public class ForwardUtil {
     Optional<String> contentType = Optional.ofNullable(
       request.getHeader("Content-Type")
     );
-    // see if incoming request has authorization
-    Optional<String> authorization = Optional.ofNullable(
-    	      request.getHeader("Authorization")
-    	    );
     // see if incoming request includes Accept header
     Optional<String> accept = Optional.ofNullable(request.getHeader("Accept"));
     // if the incoming request has Content-Type header, add it to the outgoing request
     contentType.ifPresent(
       s -> headers.setContentType(MediaType.parseMediaType(s))
     );
-    // if the incoming request has Authorization header, add it to the outgoing request
-    authorization.ifPresent(
-    	      s -> headers.add("Authorization", s)
-    	    );
     // if the incoming request has Accept header, add it to the outgoing request
     // if not, have outgoing request accept everything
     accept.ifPresentOrElse(
