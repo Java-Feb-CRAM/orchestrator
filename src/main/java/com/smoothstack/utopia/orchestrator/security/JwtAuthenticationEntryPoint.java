@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.smoothstack.utopia.orchestrator.security;
 
@@ -16,15 +16,18 @@ import org.springframework.stereotype.Component;
  * @author Rob Maes Mar 19 2021
  */
 @Component
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
+public class JwtAuthenticationEntryPoint
+  implements AuthenticationEntryPoint, Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 1935630857269649569L;
+  @Serial
+  private static final long serialVersionUID = 1935630857269649569L;
 
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
-            AuthenticationException authException) throws IOException
-    {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-    }
+  @Override
+  public void commence(
+    HttpServletRequest request,
+    HttpServletResponse response,
+    AuthenticationException authException
+  ) throws IOException {
+    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+  }
 }
