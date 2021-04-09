@@ -36,7 +36,7 @@ public class JwtUtil {
   public UserRepository userRepository;
 
   /* BEGIN REFFERENCE FOR GENERATING THE CORRECT ACCESS TOKEN */
-  @Value("${UT_JWT_SECRET}")
+  @Value("#{${UT_JWT}['jwtSecret']}")
   private String jwtSecret;
 
   private final String jwtIssuer = "utopia.smoothstack.com";
