@@ -21,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @RestController
 @RequestMapping("/airplanes")
-@Secured("ROLE_ADMIN")
+//@Secured("ROLE_ADMIN")
 public class AirplaneController {
 
   @Autowired
