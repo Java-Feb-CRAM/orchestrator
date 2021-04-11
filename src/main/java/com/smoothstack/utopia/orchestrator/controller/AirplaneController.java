@@ -3,6 +3,7 @@ package com.smoothstack.utopia.orchestrator.controller;
 import com.smoothstack.utopia.orchestrator.util.ForwardUtil;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +26,14 @@ public class AirplaneController {
 
   @Autowired
   RestTemplate restTemplate;
+
+  @Value("${test.data}")
+  private String testData;
+
+  @GetMapping("/abc")
+  public String abc() {
+    return testData;
+  }
 
   @GetMapping
   public ResponseEntity<String> getAllAirplanes(HttpServletRequest request) {
