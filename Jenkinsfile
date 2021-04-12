@@ -20,17 +20,9 @@ pipeline {
         jdk 'Java 15'
     }
     stages {
-        stage('Analysis') {
-            steps {
-                setBuildStatus("Build pending", "PENDING")
-                echo 'Analyzing..'
-                withSonarQubeEnv('sonarQube') {
-                    sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar"
-                }
-            }
-        }
         stage('Test') {
             steps {
+                setBuildStatus("Build pending", "PENDING")
                 echo 'Testing..'
                 script {
                     sh "mvn -s /var/lib/jenkins/settings.xml test"
@@ -42,6 +34,14 @@ pipeline {
                 echo 'Packging jar file..'
                 script {
                     sh "mvn -s /var/lib/jenkins/settings.xml clean package -Dmaven.test.skip.exec"
+                }
+            }
+        }
+        stage('Analysis') {
+            steps {
+                echo 'Analyzing..'
+                withSonarQubeEnv('sonarQube') {
+                    sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar"
                 }
             }
         }
