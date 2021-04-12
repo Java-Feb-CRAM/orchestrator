@@ -21,19 +21,11 @@ import org.springframework.web.client.RestTemplate;
  */
 @RestController
 @RequestMapping("/airplanes")
-//@Secured("ROLE_ADMIN")
+@Secured("ROLE_ADMIN")
 public class AirplaneController {
 
   @Autowired
   RestTemplate restTemplate;
-
-  @Value("${test.data}")
-  private String testData;
-
-  @GetMapping("/abc")
-  public String abc() {
-    return testData;
-  }
 
   @GetMapping
   public ResponseEntity<String> getAllAirplanes(HttpServletRequest request) {
