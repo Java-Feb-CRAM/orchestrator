@@ -19,6 +19,10 @@ import org.springframework.web.client.RestTemplate;
  */
 public class ForwardUtil {
 
+  private ForwardUtil() {
+    throw new IllegalStateException("Utility class");
+  }
+
   public static ResponseEntity<String> forwardRequest(
     RestTemplate rt,
     HttpServletRequest request,
@@ -48,7 +52,10 @@ public class ForwardUtil {
     // create http entity for the outgoing request
     HttpEntity<String> entity;
     // if the incoming request is a POST or PUT
-    if (method.equals(HttpMethod.POST) || method.equals(HttpMethod.PUT)) {
+    if (
+      method != null &&
+      (method.equals(HttpMethod.POST) || method.equals(HttpMethod.PUT))
+    ) {
       // attempt to parse the incoming request's body as a string
       String body = "";
       try {
@@ -57,7 +64,9 @@ public class ForwardUtil {
             .getReader()
             .lines()
             .collect(Collectors.joining(System.lineSeparator()));
-      } catch (IOException ignored) {}
+      } catch (IOException ignored) {
+        // empty body
+      }
       // if the body is empty, do not include it in the entity
       if (body.equals("")) {
         entity = new HttpEntity<>(headers);

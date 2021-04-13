@@ -23,10 +23,12 @@ public class RegistrationController {
   @Autowired
   RestTemplate restTemplate;
 
-  private final String BASE_URI = "http://user-auth-service";
-  private final String NEW_USER = "/users/new";
-  private final String GENERATE_TOKEN = "/users/usernames/tokens/generate";
-  private final String ACTIVATE_USER = "/users/useranames/tokens/activate";
+  private static final String BASE_URI = "http://user-auth-service";
+  private static final String NEW_USER = "/users/new";
+  private static final String GENERATE_TOKEN =
+    "/users/usernames/tokens/generate";
+  private static final String ACTIVATE_USER =
+    "/users/useranames/tokens/activate";
 
   @PostMapping(path = NEW_USER)
   public ResponseEntity<String> registerUserAccount(
