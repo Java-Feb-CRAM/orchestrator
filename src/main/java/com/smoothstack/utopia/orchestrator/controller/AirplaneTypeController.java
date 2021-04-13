@@ -27,8 +27,10 @@ public class AirplaneTypeController {
   @Autowired
   RestTemplate restTemplate;
 
-  private final String AIRPLANE_TYPES_URL =
+  private static final String AIRPLANE_TYPES_URL =
     "http://flight-plane-service/airplane_types";
+  private static final String AIRPLANE_TYPES_ID_URL =
+    AIRPLANE_TYPES_URL + "/{id}";
 
   @GetMapping
   public ResponseEntity<String> getAllAirplaneTypes(
@@ -49,7 +51,7 @@ public class AirplaneTypeController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      AIRPLANE_TYPES_URL + "/{id}",
+      AIRPLANE_TYPES_ID_URL,
       airplaneTypeId
     );
   }
@@ -71,7 +73,7 @@ public class AirplaneTypeController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      AIRPLANE_TYPES_URL + "/{id}",
+      AIRPLANE_TYPES_ID_URL,
       airplaneTypeId
     );
   }
@@ -84,7 +86,7 @@ public class AirplaneTypeController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      AIRPLANE_TYPES_URL + "/{id}",
+      AIRPLANE_TYPES_ID_URL,
       airplaneTypeId
     );
   }
