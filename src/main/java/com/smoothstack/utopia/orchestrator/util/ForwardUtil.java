@@ -79,6 +79,9 @@ public class ForwardUtil {
       entity = new HttpEntity<>(headers);
     }
     try {
+      if (method == null) {
+        method = HttpMethod.GET;
+      }
       // attempt to send the outgoing request and return it's response
       return rt.exchange(url, method, entity, String.class, pathVariable);
     } catch (HttpClientErrorException e) {
