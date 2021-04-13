@@ -29,6 +29,7 @@ public class FlightController {
 
   private static final String FLIGHTS_URL =
     "http://flight-plane-service/flights";
+  private static final String FLIGHTS_ID_URL = FLIGHTS_URL + "/{id}";
 
   @GetMapping
   public ResponseEntity<String> getAllFlights(HttpServletRequest request) {
@@ -43,7 +44,7 @@ public class FlightController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      FLIGHTS_URL + "/{id}",
+      FLIGHTS_ID_URL,
       flightId
     );
   }
@@ -63,7 +64,7 @@ public class FlightController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      FLIGHTS_URL + "/{id}",
+      FLIGHTS_ID_URL,
       flightId
     );
   }
@@ -77,7 +78,7 @@ public class FlightController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      FLIGHTS_URL + "/{id}",
+      FLIGHTS_ID_URL,
       flightId
     );
   }

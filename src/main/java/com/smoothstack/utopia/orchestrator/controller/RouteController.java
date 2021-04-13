@@ -27,6 +27,7 @@ public class RouteController {
   RestTemplate restTemplate;
 
   private static final String ROUTES_URL = "http://flight-plane-service/routes";
+  private static final String ROUTES_ID_URL = ROUTES_URL + "/{id}";
 
   @GetMapping
   public ResponseEntity<String> getAllRoutes(HttpServletRequest request) {
@@ -41,7 +42,7 @@ public class RouteController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      ROUTES_URL + "/{id}",
+      ROUTES_ID_URL,
       routeId
     );
   }
@@ -59,7 +60,7 @@ public class RouteController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      ROUTES_URL + "/{id}",
+      ROUTES_ID_URL,
       routeId
     );
   }
@@ -72,7 +73,7 @@ public class RouteController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      ROUTES_URL + "/{id}",
+      ROUTES_ID_URL,
       routeId
     );
   }
