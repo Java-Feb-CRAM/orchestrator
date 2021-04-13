@@ -26,13 +26,11 @@ public class RouteController {
   @Autowired
   RestTemplate restTemplate;
 
+  private static final String ROUTES_URL = "http://flight-plane-service/routes";
+
   @GetMapping
   public ResponseEntity<String> getAllRoutes(HttpServletRequest request) {
-    return ForwardUtil.forwardRequest(
-      restTemplate,
-      request,
-      "http://flight-plane-service/routes"
-    );
+    return ForwardUtil.forwardRequest(restTemplate, request, ROUTES_URL);
   }
 
   @GetMapping(path = "{routeId}")
@@ -43,18 +41,14 @@ public class RouteController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      "http://flight-plane-service/routes/{id}",
+      ROUTES_URL + "/{id}",
       routeId
     );
   }
 
   @PostMapping
   public ResponseEntity<String> createRoute(HttpServletRequest request) {
-    return ForwardUtil.forwardRequest(
-      restTemplate,
-      request,
-      "http://flight-plane-service/routes"
-    );
+    return ForwardUtil.forwardRequest(restTemplate, request, ROUTES_URL);
   }
 
   @PutMapping(path = "{routeId}")
@@ -65,7 +59,7 @@ public class RouteController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      "http://flight-plane-service/routes/{id}",
+      ROUTES_URL + "/{id}",
       routeId
     );
   }
@@ -78,7 +72,7 @@ public class RouteController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      "http://flight-plane-service/routes/{id}",
+      ROUTES_URL + "/{id}",
       routeId
     );
   }

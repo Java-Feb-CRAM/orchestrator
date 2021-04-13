@@ -26,13 +26,11 @@ public class AirportController {
   @Autowired
   RestTemplate restTemplate;
 
+  private final String AIRPORTS_URL = "http://flight-plane-service/airports";
+
   @GetMapping
   public ResponseEntity<String> getAllAirports(HttpServletRequest request) {
-    return ForwardUtil.forwardRequest(
-      restTemplate,
-      request,
-      "http://flight-plane-service/airports"
-    );
+    return ForwardUtil.forwardRequest(restTemplate, request, AIRPORTS_URL);
   }
 
   @GetMapping(path = "{airportId}")
@@ -43,18 +41,14 @@ public class AirportController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      "http://flight-plane-service/airports/{id}",
+      AIRPORTS_URL + "/{id}",
       airportId
     );
   }
 
   @PostMapping
   public ResponseEntity<String> createAirport(HttpServletRequest request) {
-    return ForwardUtil.forwardRequest(
-      restTemplate,
-      request,
-      "http://flight-plane-service/airports"
-    );
+    return ForwardUtil.forwardRequest(restTemplate, request, AIRPORTS_URL);
   }
 
   @PutMapping(path = "{airportId}")
@@ -65,7 +59,7 @@ public class AirportController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      "http://flight-plane-service/airports/{id}",
+      AIRPORTS_URL + "/{id}",
       airportId
     );
   }
@@ -78,7 +72,7 @@ public class AirportController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      "http://flight-plane-service/airports/{id}",
+      AIRPORTS_URL + "/{id}",
       airportId
     );
   }

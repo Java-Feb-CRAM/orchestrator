@@ -39,15 +39,15 @@ public class JwtUtil {
   @Value("#{${UT_JWT}['jwtSecret']}")
   private String jwtSecret;
 
-  private final String jwtIssuer = "utopia.smoothstack.com";
-  private final int ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
+  private static final String JWT_ISSUER = "utopia.smoothstack.com";
+  private static final int ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
 
   public String generateAccessToken(String username) {
     return Jwts
       .builder()
       .setSubject(format("%s", username))
       .setIssuedAt(new Date())
-      .setIssuer(jwtIssuer)
+      .setIssuer(JWT_ISSUER)
       .setExpiration(
         new Date(System.currentTimeMillis() + ONE_WEEK_MILLISECONDS)
       ) // 1 week

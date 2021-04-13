@@ -1,5 +1,6 @@
 package com.smoothstack.utopia.orchestrator;
 
+import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -28,7 +29,6 @@ public class DataSourceConfig {
   @Bean
   public DataSource getDataSource() {
     DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-    // dataSourceBuilder.driverClassName();
     dataSourceBuilder.url(
       "jdbc:mysql://" + mysqlHost + ":" + mysqlPort + "/utopia"
     );

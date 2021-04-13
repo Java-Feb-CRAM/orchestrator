@@ -23,10 +23,11 @@ public class PasswordResetController {
   @Autowired
   RestTemplate restTemplate;
 
-  private final String BASE_URI = "http://user-auth-service";
-  private final String NEW_PASSWORD = "/users/password/new";
-  private final String GENERATE_TOKEN = "/users/password/tokens/generate";
-  private final String CONFIRM_TOKEN = "/users/password/tokens/confirm";
+  private static final String BASE_URI = "http://user-auth-service";
+  private static final String NEW_PASSWORD = "/users/password/new";
+  private static final String GENERATE_TOKEN =
+    "/users/password/tokens/generate";
+  private static final String CONFIRM_TOKEN = "/users/password/tokens/confirm";
 
   @PostMapping(path = NEW_PASSWORD)
   public ResponseEntity<String> changeUserPassword(HttpServletRequest request) {
