@@ -48,7 +48,10 @@ public class ForwardUtil {
     // create http entity for the outgoing request
     HttpEntity<String> entity;
     // if the incoming request is a POST or PUT
-    if (method.equals(HttpMethod.POST) || method.equals(HttpMethod.PUT)) {
+    if (
+      method != null &&
+      (method.equals(HttpMethod.POST) || method.equals(HttpMethod.PUT))
+    ) {
       // attempt to parse the incoming request's body as a string
       String body = "";
       try {
