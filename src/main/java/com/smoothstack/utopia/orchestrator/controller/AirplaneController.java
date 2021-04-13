@@ -3,7 +3,6 @@ package com.smoothstack.utopia.orchestrator.controller;
 import com.smoothstack.utopia.orchestrator.util.ForwardUtil;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,13 +26,11 @@ public class AirplaneController {
   @Autowired
   RestTemplate restTemplate;
 
+  private final String AIRPLANES_URL = "http://flight-plane-service/airplanes";
+
   @GetMapping
   public ResponseEntity<String> getAllAirplanes(HttpServletRequest request) {
-    return ForwardUtil.forwardRequest(
-      restTemplate,
-      request,
-      "http://flight-plane-service/airplanes"
-    );
+    return ForwardUtil.forwardRequest(restTemplate, request, AIRPLANES_URL);
   }
 
   @GetMapping(path = "{airplaneId}")
@@ -44,18 +41,14 @@ public class AirplaneController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      "http://flight-plane-service/airplanes/{id}",
+      AIRPLANES_URL + "/{id}",
       airplaneId
     );
   }
 
   @PostMapping
   public ResponseEntity<String> createAirplane(HttpServletRequest request) {
-    return ForwardUtil.forwardRequest(
-      restTemplate,
-      request,
-      "http://flight-plane-service/airplanes"
-    );
+    return ForwardUtil.forwardRequest(restTemplate, request, AIRPLANES_URL);
   }
 
   @PutMapping(path = "{airplaneId}")
@@ -66,7 +59,7 @@ public class AirplaneController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      "http://flight-plane-service/airplanes/{id}",
+      AIRPLANES_URL + "/{id}",
       airplaneId
     );
   }
@@ -79,7 +72,7 @@ public class AirplaneController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      "http://flight-plane-service/airplanes/{id}",
+      AIRPLANES_URL + "/{id}",
       airplaneId
     );
   }

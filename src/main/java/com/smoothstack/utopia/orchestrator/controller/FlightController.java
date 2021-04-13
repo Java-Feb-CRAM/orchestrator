@@ -27,13 +27,12 @@ public class FlightController {
   @Autowired
   RestTemplate restTemplate;
 
+  private static final String FLIGHTS_URL =
+    "http://flight-plane-service/flights";
+
   @GetMapping
   public ResponseEntity<String> getAllFlights(HttpServletRequest request) {
-    return ForwardUtil.forwardRequest(
-      restTemplate,
-      request,
-      "http://flight-plane-service/flights"
-    );
+    return ForwardUtil.forwardRequest(restTemplate, request, FLIGHTS_URL);
   }
 
   @GetMapping(path = "{flightId}")
@@ -44,7 +43,7 @@ public class FlightController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      "http://flight-plane-service/flights/{id}",
+      FLIGHTS_URL + "/{id}",
       flightId
     );
   }
@@ -52,11 +51,7 @@ public class FlightController {
   @Secured("ROLE_ADMIN")
   @PostMapping
   public ResponseEntity<String> createFlight(HttpServletRequest request) {
-    return ForwardUtil.forwardRequest(
-      restTemplate,
-      request,
-      "http://flight-plane-service/flights"
-    );
+    return ForwardUtil.forwardRequest(restTemplate, request, FLIGHTS_URL);
   }
 
   @Secured("ROLE_ADMIN")
@@ -68,7 +63,7 @@ public class FlightController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      "http://flight-plane-service/flights/{id}",
+      FLIGHTS_URL + "/{id}",
       flightId
     );
   }
@@ -82,7 +77,7 @@ public class FlightController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      "http://flight-plane-service/flights/{id}",
+      FLIGHTS_URL + "/{id}",
       flightId
     );
   }
