@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +19,9 @@ import org.springframework.web.client.RestTemplate;
  * @author Rob Maes
  * Mar 17 2021
  */
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/airports")
-@Secured("ROLE_ADMIN")
 public class AirportController {
 
   @Autowired
@@ -49,11 +50,13 @@ public class AirportController {
   }
 
   @PostMapping
+  @Secured("ROLE_ADMIN")
   public ResponseEntity<String> createAirport(HttpServletRequest request) {
     return ForwardUtil.forwardRequest(restTemplate, request, AIRPORTS_URL);
   }
 
   @PutMapping(path = "{airportId}")
+  @Secured("ROLE_ADMIN")
   public ResponseEntity<String> updateAirport(
     HttpServletRequest request,
     @PathVariable("airportId") String airportId
@@ -67,6 +70,7 @@ public class AirportController {
   }
 
   @DeleteMapping(path = "{airportId}")
+  @Secured("ROLE_ADMIN")
   public ResponseEntity<String> deleteAirport(
     HttpServletRequest request,
     @PathVariable("airportId") String airportId
