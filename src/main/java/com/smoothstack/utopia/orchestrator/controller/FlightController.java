@@ -1,7 +1,6 @@
 package com.smoothstack.utopia.orchestrator.controller;
 
 import com.smoothstack.utopia.orchestrator.util.ForwardUtil;
-
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,24 +32,28 @@ public class FlightController {
   private static final String FLIGHTS_ID_URL = FLIGHTS_URL + "/{id}";
 
   @GetMapping(
-      path = "origin/{originIataId}/destination/{destinationIataId}/departure/{departureTime}/search/{stops}")
+    path = "origin/{originIataId}/destination/{destinationIataId}/departure/{departureTime}/search/{stops}"
+  )
   public ResponseEntity<String> getAllMultiStopFlights(
-      HttpServletRequest request,
-      @PathVariable("originIataId") String originIataId,
-      @PathVariable("destinationIataId") String destinationIataId,
-      @PathVariable("departureTime") Long departureTime,
-      @PathVariable("stops") Integer stops)
-  {
-      return ForwardUtil.forwardRequest(
-          restTemplate, 
-          request, 
-          FLIGHTS_URL+"/"+"origin/{originIataId}/destination/{destinationIataId}/departure/{departureTime}/search/{stops}", 
-          originIataId,
-          destinationIataId,
-          departureTime,
-          stops);
+    HttpServletRequest request,
+    @PathVariable("originIataId") String originIataId,
+    @PathVariable("destinationIataId") String destinationIataId,
+    @PathVariable("departureTime") Long departureTime,
+    @PathVariable("stops") Integer stops
+  ) {
+    return ForwardUtil.forwardRequest(
+      restTemplate,
+      request,
+      FLIGHTS_URL +
+      "/" +
+      "origin/{originIataId}/destination/{destinationIataId}/departure/{departureTime}/search/{stops}",
+      originIataId,
+      destinationIataId,
+      departureTime,
+      stops
+    );
   }
-  
+
   @GetMapping
   public ResponseEntity<String> getAllFlights(HttpServletRequest request) {
     return ForwardUtil.forwardRequest(restTemplate, request, FLIGHTS_URL);
