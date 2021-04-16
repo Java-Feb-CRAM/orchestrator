@@ -24,13 +24,18 @@ public class PaymentController {
   RestTemplate restTemplate;
 
   private static final String PAYMENTS_ID_URL =
-    "http://ticket-payment-service/payments";
+    "http://ticket-payment-service/payments/{id}";
 
   @GetMapping(path = "{stripeId}")
   public ResponseEntity<String> getPayment(
     HttpServletRequest request,
     @PathVariable("stripeId") String stripeId
   ) {
-    return ForwardUtil.forwardRequest(restTemplate, request, PAYMENTS_ID_URL);
+    return ForwardUtil.forwardRequest(
+      restTemplate,
+      request,
+      PAYMENTS_ID_URL,
+      stripeId
+    );
   }
 }
