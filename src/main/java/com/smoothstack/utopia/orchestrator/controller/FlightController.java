@@ -32,12 +32,13 @@ public class FlightController {
   private static final String FLIGHTS_ID_URL = FLIGHTS_URL + "/{id}";
 
   @GetMapping(
-    path = "origin/{originIataId}/destination/{destinationIataId}/departure/{departureTime}/search/{stops}"
+    path = "origin/{originIataId}/destination/{destinationIataId}/from/{dateRangeStart}/to/{dateRangeEnd}/search/{stops}"
   )
   public ResponseEntity<String> getAllMultiStopFlights(
     HttpServletRequest request,
     @PathVariable("originIataId") String originIataId,
-    @PathVariable("destinationIataId") String destinationIataId,
+    @PathVariable("dateRangeStart") String dateRangeStart,
+    @PathVariable("dateRangeEnd") String dateRangeEnd,
     @PathVariable("departureTime") Long departureTime,
     @PathVariable("stops") Integer stops
   ) {
@@ -48,7 +49,8 @@ public class FlightController {
       "/" +
       "origin/{originIataId}/destination/{destinationIataId}/departure/{departureTime}/search/{stops}",
       originIataId,
-      destinationIataId,
+      dateRangeStart,
+      dateRangeEnd,
       departureTime,
       stops
     );
