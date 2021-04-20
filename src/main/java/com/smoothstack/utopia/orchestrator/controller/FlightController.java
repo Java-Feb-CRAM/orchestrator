@@ -30,6 +30,7 @@ public class FlightController {
   private static final String FLIGHTS_URL =
     "http://flight-plane-service/flights";
   private static final String FLIGHTS_ID_URL = FLIGHTS_URL + "/{id}";
+  private static final String FLIGHT_SEARCH_URI = FLIGHTS_URL + "/origin/{originIataId}/destination/{destinationIataId}/from/{dateRangeStart}/to/{dateRangeEnd}/search/{stops}";
 
   @GetMapping(
     path = "origin/{originIataId}/destination/{destinationIataId}/from/{dateRangeStart}/to/{dateRangeEnd}/search/{stops}"
@@ -45,9 +46,7 @@ public class FlightController {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
-      FLIGHTS_URL +
-      "/" +
-      "origin/{originIataId}/destination/{destinationIataId}/departure/{departureTime}/search/{stops}",
+      FLIGHT_SEARCH_URI,
       originIataId,
       destinationIataId,
       dateRangeStart,
