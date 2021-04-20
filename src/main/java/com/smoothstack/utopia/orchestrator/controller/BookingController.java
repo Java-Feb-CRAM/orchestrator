@@ -61,6 +61,19 @@ public class BookingController {
     );
   }
 
+  @GetMapping(path = "/user/{userId}")
+  public ResponseEntity<String> getBookingsByUser(
+    HttpServletRequest request,
+    @PathVariable("userId") Long userId
+  ) {
+    return ForwardUtil.forwardRequest(
+      restTemplate,
+      request,
+      BOOKINGS_URL + "/user/{id}",
+      userId
+    );
+  }
+
   @PostMapping(path = "/guest")
   public ResponseEntity<String> createGuestBooking(HttpServletRequest request) {
     return ForwardUtil.forwardRequest(
