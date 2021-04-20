@@ -37,9 +37,9 @@ public class FlightController {
   public ResponseEntity<String> getAllMultiStopFlights(
     HttpServletRequest request,
     @PathVariable("originIataId") String originIataId,
-    @PathVariable("dateRangeStart") String dateRangeStart,
-    @PathVariable("dateRangeEnd") String dateRangeEnd,
-    @PathVariable("departureTime") Long departureTime,
+    @PathVariable("destinationIataId") String destinationIataId,
+    @PathVariable("dateRangeStart") Long dateRangeStart,
+    @PathVariable("dateRangeEnd") Long dateRangeEnd,
     @PathVariable("stops") Integer stops
   ) {
     return ForwardUtil.forwardRequest(
@@ -49,9 +49,9 @@ public class FlightController {
       "/" +
       "origin/{originIataId}/destination/{destinationIataId}/departure/{departureTime}/search/{stops}",
       originIataId,
+      destinationIataId,
       dateRangeStart,
       dateRangeEnd,
-      departureTime,
       stops
     );
   }
