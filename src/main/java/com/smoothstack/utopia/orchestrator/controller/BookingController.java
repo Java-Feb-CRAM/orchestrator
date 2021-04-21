@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,12 +62,56 @@ public class BookingController {
     );
   }
 
+  @GetMapping(path = "/user/{userId}")
+  public ResponseEntity<String> getBookingsByUser(
+    HttpServletRequest request,
+    @PathVariable("userId") Long userId
+  ) {
+    return ForwardUtil.forwardRequest(
+      restTemplate,
+      request,
+      BOOKINGS_URL + "/user/{id}",
+      userId
+    );
+  }
+
   @PostMapping(path = "/guest")
   public ResponseEntity<String> createGuestBooking(HttpServletRequest request) {
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
       BOOKINGS_URL + "/guest"
+    );
+  }
+
+  @PostMapping(path = "/user")
+  public ResponseEntity<String> createUserBooking(HttpServletRequest request) {
+    return ForwardUtil.forwardRequest(
+      restTemplate,
+      request,
+      BOOKINGS_URL + "/user"
+    );
+  }
+
+  @PostMapping(path = "/agent")
+  public ResponseEntity<String> createAgentBooking(HttpServletRequest request) {
+    return ForwardUtil.forwardRequest(
+      restTemplate,
+      request,
+      BOOKINGS_URL + "/agent"
+    );
+  }
+
+  @DeleteMapping(path = "{bookingId}")
+  public ResponseEntity<String> cancelBooking(
+    HttpServletRequest request,
+    @PathVariable("bookingId") Long bookingId
+  ) {
+    return ForwardUtil.forwardRequest(
+      restTemplate,
+      request,
+      BOOKINGS_ID_URL,
+      bookingId
     );
   }
 }
