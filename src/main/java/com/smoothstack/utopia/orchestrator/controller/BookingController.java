@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -99,6 +100,19 @@ public class BookingController {
       restTemplate,
       request,
       BOOKINGS_URL + "/agent"
+    );
+  }
+
+  @PutMapping(path = "{bookingId}")
+  public ResponseEntity<String> updateBooking(
+    HttpServletRequest request,
+    @PathVariable("bookingId") Long bookingId
+  ) {
+    return ForwardUtil.forwardRequest(
+      restTemplate,
+      request,
+      BOOKINGS_ID_URL,
+      bookingId
     );
   }
 
