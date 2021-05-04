@@ -28,7 +28,7 @@ public class RegistrationController {
   private static final String GENERATE_TOKEN =
     "/users/usernames/tokens/generate";
   private static final String ACTIVATE_USER =
-    "/users/useranames/tokens/activate";
+    "/users/usernames/tokens/activate";
 
   @PostMapping(path = NEW_USER)
   public ResponseEntity<String> registerUserAccount(
@@ -54,6 +54,7 @@ public class RegistrationController {
 
   @PostMapping(path = ACTIVATE_USER)
   public ResponseEntity<String> verifyEmail(HttpServletRequest request) {
+    System.out.println("activate");
     return ForwardUtil.forwardRequest(
       restTemplate,
       request,
