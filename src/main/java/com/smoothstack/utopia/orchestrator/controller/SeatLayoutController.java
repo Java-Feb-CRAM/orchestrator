@@ -2,10 +2,12 @@ package com.smoothstack.utopia.orchestrator.controller;
 
 import com.smoothstack.utopia.orchestrator.util.ForwardUtil;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +39,7 @@ public class SeatLayoutController {
   @GetMapping(path = "{seatLayoutId}")
   public ResponseEntity<String> getSeatLayout(
     HttpServletRequest request,
-    @PathVariable("seatLayoutId") String seatLayoutId
+    @PathVariable("seatLayoutId") Long seatLayoutId
   ) {
     return ForwardUtil.forwardRequest(
       restTemplate,
@@ -51,5 +53,19 @@ public class SeatLayoutController {
   @PostMapping
   public ResponseEntity<String> createSeatLayout(HttpServletRequest request) {
     return ForwardUtil.forwardRequest(restTemplate, request, SEAT_LAYOUTS_URL);
+  }
+
+  @Secured("ROLE_ADMIN")
+  @DeleteMapping(path = "{seatLayoutId}")
+  public ResponseEntity<String> deleteSeatLayout(
+    HttpServletRequest request,
+    @PathVariable("seatLayoutId") Long seatLayoutId
+  ) {
+    return ForwardUtil.forwardRequest(
+      restTemplate,
+      request,
+      SEAT_LAYOUTS_ID_URL,
+      seatLayoutId
+    );
   }
 }
